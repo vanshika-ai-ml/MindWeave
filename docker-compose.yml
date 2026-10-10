@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: mindweave_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: mindweave_user
+      POSTGRES_PASSWORD: mindweave_password
+      POSTGRES_DB: mindweave_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U mindweave_user -d mindweave_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
